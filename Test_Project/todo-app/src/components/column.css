@@ -80,7 +80,6 @@
     font-size: 0.9rem;
 }
 
-/* input direction helpers */
 .add-form input.rtl {
     direction: rtl;
     text-align: right
@@ -91,12 +90,10 @@
     text-align: left;
 }
 
-/* ensure alert doesn't overflow */
 .add-form .alert {
     width: 100%;
 }
 
-/* small shake animation for invalid submit */
 @keyframes shake {
 
     10%,

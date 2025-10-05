@@ -1,5 +1,8 @@
 import React, { useState } from 'react'
 import './taskcard.css'
+import confirm from '../utils/confirm'
+import successNotify from '../utils/successNotify'
+import editTask from '../utils/edit'
 
 export default function TaskCard({ task, updateTask, deleteTask }) {
     const [editing, setEditing] = useState(false)
@@ -26,8 +29,21 @@ export default function TaskCard({ task, updateTask, deleteTask }) {
                     <h3>{task.title}</h3>
                 )}
                 <div className="task-actions">
-                    <button onClick={() => deleteTask(task.id)}>حذف</button>
-                    <button onClick={() => { if (editing) save(); else setEditing(true) }}>{editing ? 'ذخیره' : 'ویرایش'}</button>
+                    <button onClick={async () => {
+                        const ok = await confirm({ title: 'حذف تسک', message: `آیا از حذف «${task.title}» مطمئن هستید؟`, confirmText: 'حذف', cancelText: 'انصراف' })
+                        if (ok) {
+                            deleteTask(task.id)
+                            try { successNotify('تسک با موفقیت حذف شد') } catch(e){}
+                        }
+                    }}>حذف</button>
+                    <button onClick={async () => {
+                        // open edit modal
+                        const data = await editTask({ title: task.title, description: task.description })
+                        if (data && data.title && data.title.trim()) {
+                            updateTask(task.id, { title: data.title.trim(), description: data.description })
+                            try { successNotify('تسک ویرایش شد') } catch(e){}
+                        }
+                    }}>{editing ? 'ذخیره' : 'ویرایش'}</button>
                 </div>
             </div>
             <div className="task-body">

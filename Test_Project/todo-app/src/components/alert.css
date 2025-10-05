@@ -64,7 +64,7 @@
     border-radius: 8px;
     box-shadow: 0 8px 28px rgba(16, 24, 40, 0.08);
     animation: slideDown 300ms cubic-bezier(.2, .9, .3, 1);
-    max-width: 200px;
+    max-width: 220px;
     width: calc(100% - 40px);
 }
 
@@ -105,4 +105,11 @@
         transform: translateY(-8px) scale(.98);
         opacity: 0
     }
+}
+
+/* success variant */
+.alert-success {
+    background: linear-gradient(180deg, #ecfdf5, #d1fae5);
+    border: 1px solid #86efac;
+    color: #065f46;
 }

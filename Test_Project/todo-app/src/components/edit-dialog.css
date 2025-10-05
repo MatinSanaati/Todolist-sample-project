@@ -1,0 +1,97 @@
+.ed-root {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 12000
+}
+
+.ed-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    animation: ed-backdrop-in 200ms ease forwards
+}
+
+.ed-card {
+    position: relative;
+    z-index: 12001;
+    background: #fff;
+    padding: 18px;
+    border-radius: 10px;
+    width: clamp(320px, 90%, 640px);
+    box-shadow: 0 24px 64px rgba(2, 6, 23, 0.32);
+    transform: translateY(-8px);
+    animation: ed-card-in 260ms cubic-bezier(.2, .9, .3, 1) forwards
+}
+
+.ed-title {
+    margin: 0 0 8px 0;
+    text-align: right
+}
+
+.ed-body input,
+.ed-body textarea {
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #e6eef6;
+    margin-bottom: 8px
+}
+
+.ed-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end
+}
+
+.ed-actions button {
+    border: none;
+    outline: none;
+    padding: 8px 12px;
+    border-radius: 8px;
+    color: #fff;
+    cursor: pointer;
+    transition: all ease 150ms;
+}
+
+.ed-actions button:nth-child(1) {
+    background: #46c5e5;
+}
+
+.ed-actions button:nth-child(1):hover {
+    background: #46a5e5;
+    transform: scale(1.05);
+}
+
+.ed-actions button:nth-child(2) {
+    background: #ef4444;
+}
+
+.ed-actions button:nth-child(2):hover {
+    background: #ef2c2c;
+    transform: scale(1.05);
+}
+
+@keyframes ed-backdrop-in {
+    from {
+        opacity: 0
+    }
+
+    to {
+        opacity: 1
+    }
+}
+
+@keyframes ed-card-in {
+    from {
+        transform: translateY(-12px) scale(.98);
+        opacity: 0
+    }
+
+    to {
+        transform: translateY(0) scale(1);
+        opacity: 1
+    }
+}

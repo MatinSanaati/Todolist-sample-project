@@ -2,6 +2,7 @@ import React, { useState, useRef } from 'react'
 import TaskCard from './TaskCard'
 import './column.css'
 import notify from '../utils/notify'
+import successNotify from '../utils/successNotify'
 
 export default function Column({ columnId, title, tasks = [], addTask, updateTask, deleteTask, moveTask }) {
     const [newTitle, setNewTitle] = useState('')
@@ -43,10 +44,10 @@ export default function Column({ columnId, title, tasks = [], addTask, updateTas
             return
         }
 
-        addTask(newTitle.trim(), newDesc.trim())
-        setNewTitle('')
-        setNewDesc('')
-        setErrorMsg('')
+    addTask(newTitle.trim(), newDesc.trim())
+    setNewTitle('')
+    setNewDesc('')
+    try { successNotify('تسک با موفقیت اضافه شد') } catch (e) {}
     }
 
     const handleDragOver = e => {
