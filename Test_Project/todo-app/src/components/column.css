@@ -1,0 +1,63 @@
+.column {
+    background: #f5f6fa;
+    border-radius: 8px;
+    padding: 12px;
+    flex: 1 1 320px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-height: 200px;
+    transition: box-shadow 160ms, transform 120ms;
+}
+
+.column.drag-over {
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+    transform: translateY(-4px);
+}
+
+.column-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    text-align: right;
+}
+
+.column-header h2 {
+    font-size: 1.05rem;
+    margin: 0
+}
+
+.count {
+    font-weight: 600;
+    color: #555;
+    font-size: 0.9rem
+}
+
+.add-form {
+    display: flex;
+    gap: 6px;
+    flex-direction: column;
+}
+
+.add-form input {
+    padding: 8px;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+    width: 100%;
+}
+
+.add-form button {
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: 0;
+    background: #4f46e5;
+    color: #fff;
+    align-self: flex-start;
+}
+
+.task-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 6px
+}
