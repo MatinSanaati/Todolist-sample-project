@@ -12,6 +12,7 @@ export default function Column({ columnId, title, tasks = [], addTask, updateTas
     const [dragOver, setDragOver] = useState(false)
     const [shakeForm, setShakeForm] = useState(false)
     const listRef = useRef(null)
+    const [overIndex, setOverIndex] = useState(null)
 
     // detect if input contains persian/arabic characters -> use RTL, otherwise LTR
     const containsPersian = str => /[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDFF\uFE70-\uFEFF]/.test(str)
@@ -60,8 +61,17 @@ export default function Column({ columnId, title, tasks = [], addTask, updateTas
         setDragOver(false)
         const id = e.dataTransfer.getData('text/plain')
         if (!id) return
-        moveTask(id, columnId)
+        // use overIndex to place at specific position
+        moveTask(id, columnId, overIndex)
+        setOverIndex(null)
     }
+
+    const handleItemDragOver = (e, idx) => {
+        e.preventDefault()
+        setOverIndex(idx)
+    }
+
+    const handleItemDragLeave = () => setOverIndex(null)
 
     return (
         <section className={`column ${dragOver ? 'drag-over' : ''}`} onDragOver={handleDragOver} onDragLeave={handleDragLeave} onDrop={handleDrop} ref={listRef}>
@@ -89,11 +99,15 @@ export default function Column({ columnId, title, tasks = [], addTask, updateTas
                 </form>
             )}
 
-            <div className="task-list">
-                {tasks.sort((a, b) => 0).map(task => (
-                    <TaskCard key={task.id} task={task} updateTask={updateTask} deleteTask={deleteTask} />
-                ))}
-            </div>
+                    <div className="task-list">
+                        {tasks.sort((a,b)=> (a.order||0) - (b.order||0)).map((task, idx) => (
+                            <div key={task.id} onDragOver={e => handleItemDragOver(e, idx)} onDragLeave={handleItemDragLeave}>
+                                {overIndex === idx && <div className="insert-indicator" />}
+                                <TaskCard task={task} updateTask={updateTask} deleteTask={deleteTask} />
+                            </div>
+                        ))}
+                        {overIndex === tasks.length && <div className="insert-indicator" />}
+                    </div>
         </section>
     )
 }

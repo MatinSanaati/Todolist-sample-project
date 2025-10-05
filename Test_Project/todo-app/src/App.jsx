@@ -31,8 +31,15 @@ function App() {
   const addTask = (title, description) => {
     if (!title) return
     const id = Date.now().toString()
-    const newTask = { id, title, description: description || '', createdAt: new Date().toISOString() }
-    setTasks(prev => ({ ...prev, [id]: { ...newTask, column: 'todo' } }))
+    const createdAt = new Date().toISOString()
+    const newTask = { id, title, description: description || '', createdAt }
+    setTasks(prev => {
+      // compute next order for todo column
+      const values = Object.values(prev || {})
+      const todoItems = values.filter(t => t.column === 'todo').sort((a,b) => (a.order||0) - (b.order||0))
+      const nextOrder = (todoItems.length ? (todoItems[todoItems.length-1].order || todoItems.length-1) + 1 : 0)
+      return { ...prev, [id]: { ...newTask, column: 'todo', order: nextOrder } }
+    })
   }
 
   const updateTask = (id, patch) => {
@@ -51,9 +58,42 @@ function App() {
     setTasks(prev => {
       const copy = { ...prev }
       if (!copy[id]) return prev
-      copy[id] = { ...copy[id], column: toColumn }
-      // store ordering by adding an index meta map in each column by insertion order
-      // We'll rebuild ordering on the fly in Column component
+
+      // build arrays per column with stable ordering
+      const all = Object.values(copy).map(t => ({ ...t }))
+      const groups = {}
+      all.forEach(t => {
+        const col = t.column || 'todo'
+        if (!groups[col]) groups[col] = []
+        groups[col].push(t)
+      })
+      Object.keys(groups).forEach(col => groups[col].sort((a,b) => (a.order||0) - (b.order||0)))
+
+      const task = copy[id]
+      const fromCol = task.column || 'todo'
+
+      // remove from source group
+      groups[fromCol] = (groups[fromCol] || []).filter(t => t.id !== id)
+
+      // ensure target group exists
+      if (!groups[toColumn]) groups[toColumn] = []
+
+      // determine insert index
+      let index = toIndex
+      if (index == null || index < 0 || index > groups[toColumn].length) index = groups[toColumn].length
+
+      // insert into target
+      const moved = { ...task, column: toColumn }
+      groups[toColumn].splice(index, 0, moved)
+
+      // reassign order numbers per group
+      Object.keys(groups).forEach(col => {
+        groups[col].forEach((t, i) => {
+          if (!copy[t.id]) copy[t.id] = {}
+          copy[t.id] = { ...copy[t.id], order: i, column: col }
+        })
+      })
+
       return copy
     })
   }
