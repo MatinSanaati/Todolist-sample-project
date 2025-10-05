@@ -1,12 +1,11 @@
 .column {
-    background: #f5f6fa;
+    min-width: 280px;
     border-radius: 8px;
-    padding: 12px;
-    flex: 1 1 320px;
+    padding: 16px;
+    flex: 1 1 380px;
     display: flex;
     flex-direction: column;
-    gap: 8px;
-    min-height: 200px;
+    gap: 12px;
     transition: box-shadow 160ms, transform 120ms;
 }
 
@@ -23,7 +22,7 @@
 }
 
 .column-header h2 {
-    font-size: 1.05rem;
+    font-size: 1.1rem;
     margin: 0;
 }
 
@@ -64,14 +63,41 @@
 }
 
 .task-list {
+    max-height: 470px;
+    overflow: auto;
+    overflow-x: hidden;
     display: flex;
     flex-direction: column;
     gap: 8px;
     margin-top: 6px;
 }
 
+.task-list::-webkit-scrollbar {
+    display: none;
+}
+
+.task-list {
+    scrollbar-width: none;
+}
+
+.task-list {
+    -ms-overflow-style: none;
+}
+
+.task-list::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 4px;
+}
+
+.task-list::-webkit-scrollbar-thumb:hover {
+    background: #aaa;
+}
+
 .insert-indicator {
-    height: 8px; margin:6px 0; border-radius:4px; background: linear-gradient(90deg,#60a5fa,#a78bfa); box-shadow:0 6px 18px rgba(99,102,241,0.12);
+    height: 110px;
+    margin: 8px 0;
+    border-radius: 10px;
+    box-shadow: 0 6px 18px rgba(107, 109, 202, 0.336);
     transition: height 120ms ease, opacity 160ms ease;
 }
 
@@ -151,5 +177,55 @@
 
     100% {
         transform: translateY(0)
+    }
+}
+
+/* Column responsive rules */
+@media (max-width:1199px) {
+    .column {
+        padding: 12px
+    }
+
+    .column-header h2 {
+        font-size: 1.02rem
+    }
+}
+
+@media (max-width:920px) {
+    .column {
+        width: 100%;
+        flex: 1 1 auto;
+        min-height: 140px
+    }
+
+    .add-form input {
+        font-size: 1rem;
+        padding: 6px
+    }
+
+    .add-form button {
+        padding: 6px 10px
+    }
+}
+
+@media (max-width:600px) {
+    .column {
+        padding: 8px
+    }
+
+    .add-form input {
+        font-size: 0.95rem
+    }
+}
+
+@media (max-width:380px) {
+    .add-form input {
+        font-size: 0.9rem;
+        padding: 6px
+    }
+
+    .add-form button {
+        padding: 6px 8px;
+        font-size: 0.9rem
     }
 }

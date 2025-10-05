@@ -1,5 +1,5 @@
 import React from 'react'
-import './confirm-dialog.css';
+import './confirm-dialog.css'
 
 export default function ConfirmDialog({ title = 'هشدار', message = '', onConfirm, onCancel, confirmText = 'حذف', cancelText = 'انصراف' }) {
     return (

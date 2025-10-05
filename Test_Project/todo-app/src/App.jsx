@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import './App.css'
-import Column from './components/Column'
+import Column from './components/Column/column.jsx'
 
 const COLUMNS = [
   { id: 'todo', title: 'برای انجام' },
@@ -32,14 +32,25 @@ function App() {
     if (!title) return
     const id = Date.now().toString()
     const createdAt = new Date().toISOString()
-    const newTask = { id, title, description: description || '', createdAt }
+    const newTask = { id, title: title.trim(), description: (description || '').trim(), createdAt, isNew: true }
+
+    // duplicate detection across all tasks: match both title and description (case-insensitive)
+    const normalize = s => (s || '').trim().toLowerCase()
+    const tNorm = normalize(newTask.title)
+    const dNorm = normalize(newTask.description)
+    const existing = Object.values(tasks || {}).find(t => normalize(t.title) === tNorm && normalize(t.description) === dNorm)
+    if (existing) {
+      return { ok: false, reason: 'duplicate', existingId: existing.id }
+    }
+
     setTasks(prev => {
       // compute next order for todo column
       const values = Object.values(prev || {})
-      const todoItems = values.filter(t => t.column === 'todo').sort((a,b) => (a.order||0) - (b.order||0))
-      const nextOrder = (todoItems.length ? (todoItems[todoItems.length-1].order || todoItems.length-1) + 1 : 0)
+      const todoItems = values.filter(t => t.column === 'todo').sort((a, b) => (a.order || 0) - (b.order || 0))
+      const nextOrder = (todoItems.length ? (todoItems[todoItems.length - 1].order || todoItems.length - 1) + 1 : 0)
       return { ...prev, [id]: { ...newTask, column: 'todo', order: nextOrder } }
     })
+    return { ok: true, id }
   }
 
   const updateTask = (id, patch) => {
@@ -67,7 +78,7 @@ function App() {
         if (!groups[col]) groups[col] = []
         groups[col].push(t)
       })
-      Object.keys(groups).forEach(col => groups[col].sort((a,b) => (a.order||0) - (b.order||0)))
+      Object.keys(groups).forEach(col => groups[col].sort((a, b) => (a.order || 0) - (b.order || 0)))
 
       const task = copy[id]
       const fromCol = task.column || 'todo'
@@ -101,8 +112,8 @@ function App() {
   return (
     <div id="app-root">
       <header className="app-header">
-        <h1>اپ ساده مدیریت تسک (کانبان)</h1>
-        <p className="subtitle">سه ستون • کشیدن و رها کردن • ذخیره در Local Storage</p>
+        <h1>اپ ساده مدیریت تسک (نمونه کار)</h1>
+        <p className="subtitle">سه ستون _ کشیدن و رها کردن _ ذخیره در Local Storage</p>
       </header>
 
       <main className="board">
@@ -120,7 +131,7 @@ function App() {
         ))}
       </main>
 
-      <footer className="app-footer">ساخته شده با React Hooks • داده‌ها در Local Storage ذخیره می‌شوند</footer>
+      <footer className="app-footer">ساخته شده با React Hooks _ داده‌ها در Local Storage ذخیره می‌شوند</footer>
     </div>
   )
 }

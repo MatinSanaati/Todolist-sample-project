@@ -1,6 +1,6 @@
 import React from 'react'
 import { createRoot } from 'react-dom/client'
-import EditDialog from '../components/EditDialog'
+import EditDialog from '../components/Edit_Dialog/edit-dialog.jsx'
 
 export default function editTask(initial = {}) {
   const container = document.createElement('div')

@@ -14,10 +14,13 @@
 }
 
 .board {
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+  height: 70vh;
+  overflow: hidden;
   display: flex;
   gap: 16px;
   align-items: flex-start;
-  padding: 8px
+  padding: 8px;
 }
 
 .app-footer {
@@ -28,7 +31,9 @@
 
 @media (max-width:920px) {
   .board {
-    flex-direction: column
+    flex-direction: column;
+    gap: 12px;
+    padding: 12px 0;
   }
 }
 
@@ -76,4 +81,70 @@
 
 .read-the-docs {
   color: #888;
+}
+
+/* Responsive refinements across breakpoints */
+@media (max-width:1199px) {
+  .app-header h1 {
+    font-size: 1.25rem
+  }
+
+  .board {
+    gap: 12px
+  }
+}
+
+@media (max-width:920px) {
+
+  /* board already stacks, make columns full width */
+  .board {
+    gap: 10px
+  }
+
+  .app-header h1 {
+    font-size: 1.15rem
+  }
+
+  .subtitle {
+    font-size: 0.95rem
+  }
+}
+
+@media (max-width:600px) {
+  #root {
+    padding: 10px
+  }
+
+  .app-header h1 {
+    font-size: 1rem
+  }
+
+  .subtitle {
+    font-size: 0.9rem
+  }
+}
+
+@media (max-width:380px) {
+  #root {
+    padding: 8px
+  }
+
+  .app-header h1 {
+    font-size: 0.95rem
+  }
+
+  .subtitle {
+    font-size: 0.85rem
+  }
+}
+
+/* Tiny devices: reduce spacing and scale down UI controls */
+@media (max-width:240px) {
+  .app-header h1 {
+    font-size: 0.88rem
+  }
+
+  .board {
+    gap: 6px
+  }
 }

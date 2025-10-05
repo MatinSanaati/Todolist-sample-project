@@ -1,6 +1,6 @@
 import React from 'react'
 import { createRoot } from 'react-dom/client'
-import Alert from '../components/Alert'
+import Alert from '../components/Alert/Alert.jsx'
 
 // Simple programmatic notifier that mounts an Alert to document.body
 export default function notify(message, type = 'error', options = {}) {

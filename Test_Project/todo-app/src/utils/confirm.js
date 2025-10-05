@@ -1,6 +1,6 @@
 import React from 'react'
 import { createRoot } from 'react-dom/client'
-import ConfirmDialog from '../components/ConfirmDialog'
+import ConfirmDialog from '../components/confirm_dialog/confirm-dialog.jsx'
 
 export default function confirm({ title, message, confirmText, cancelText }) {
   const container = document.createElement('div')

@@ -1,0 +1,20 @@
+/* Touch drag wrapper */
+.td-touch-wrapper {
+	touch-action: pan-y;
+	/* allow vertical scroll, but we'll manage horizontal drags */
+}
+
+/* ghost preview */
+.td-ghost {
+	opacity: 0;
+	transform: scale(0.98);
+	transition: opacity 180ms ease, transform 180ms ease;
+	will-change: transform, opacity, left, top;
+	z-index: 9998;
+	box-shadow: 0 18px 40px rgba(2, 6, 23, 0.35);
+}
+
+.td-ghost--visible {
+	opacity: 1;
+	transform: scale(1);
+}

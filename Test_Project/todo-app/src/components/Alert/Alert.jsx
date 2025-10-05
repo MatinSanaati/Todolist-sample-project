@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react'
-import './alert.css'
+import './Alert.css'
 
 export default function Alert({ message, onClose, type = 'error', backdrop = true }) {
     const [exiting, setExiting] = useState(false)

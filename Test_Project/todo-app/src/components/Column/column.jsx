@@ -1,8 +1,9 @@
 import React, { useState, useRef } from 'react'
-import TaskCard from './TaskCard'
+import TaskCard from '../Task_Card/task-card.jsx'
+import TouchDraggable from '../TouchDrag/TouchDraggable.jsx'
 import './column.css'
-import notify from '../utils/notify'
-import successNotify from '../utils/successNotify'
+import notify from '../../utils/notify.js'
+import successNotify from '../../utils/successNotify.js'
 
 export default function Column({ columnId, title, tasks = [], addTask, updateTask, deleteTask, moveTask }) {
     const [newTitle, setNewTitle] = useState('')
@@ -30,25 +31,35 @@ export default function Column({ columnId, title, tasks = [], addTask, updateTas
 
     const onAdd = e => {
         e.preventDefault()
-        // Require both fields filled (user requested validation)
+        // Require both fields filled
         if (!newTitle.trim() || !newDesc.trim()) {
             setShakeForm(true)
-            // visual shake on the whole app-root for device-like effect
             const root = document.getElementById('app-root')
             if (root) {
                 root.classList.add('device-shake')
                 setTimeout(() => root.classList.remove('device-shake'), 600)
             }
-            // remove shake after animation
             setTimeout(() => setShakeForm(false), 600)
             notify('لطفاً همهٔ فیلدها را پر کنید', 'error')
             return
         }
 
-    addTask(newTitle.trim(), newDesc.trim())
-    setNewTitle('')
-    setNewDesc('')
-    try { successNotify('تسک با موفقیت اضافه شد') } catch (e) {}
+        const result = addTask(newTitle.trim(), newDesc.trim())
+        if (result && result.ok === false && result.reason === 'duplicate') {
+            setShakeForm(true)
+            const root = document.getElementById('app-root')
+            if (root) {
+                root.classList.add('device-shake')
+                setTimeout(() => root.classList.remove('device-shake'), 600)
+            }
+            setTimeout(() => setShakeForm(false), 600)
+            notify('این تسک قبلاً اضافه شده', 'error')
+            return
+        }
+
+        setNewTitle('')
+        setNewDesc('')
+        try { successNotify('تسک با موفقیت اضافه شد') } catch (e) { }
     }
 
     const handleDragOver = e => {
@@ -61,7 +72,6 @@ export default function Column({ columnId, title, tasks = [], addTask, updateTas
         setDragOver(false)
         const id = e.dataTransfer.getData('text/plain')
         if (!id) return
-        // use overIndex to place at specific position
         moveTask(id, columnId, overIndex)
         setOverIndex(null)
     }
@@ -74,7 +84,7 @@ export default function Column({ columnId, title, tasks = [], addTask, updateTas
     const handleItemDragLeave = () => setOverIndex(null)
 
     return (
-        <section className={`column ${dragOver ? 'drag-over' : ''}`} onDragOver={handleDragOver} onDragLeave={handleDragLeave} onDrop={handleDrop} ref={listRef}>
+        <section data-column-id={columnId} className={`column ${dragOver ? 'drag-over' : ''}`} onDragOver={handleDragOver} onDragLeave={handleDragLeave} onDrop={handleDrop} ref={listRef}>
             <header className="column-header">
                 <h2>{title} <span className="count">({tasks.length})</span></h2>
             </header>
@@ -99,15 +109,17 @@ export default function Column({ columnId, title, tasks = [], addTask, updateTas
                 </form>
             )}
 
-                    <div className="task-list">
-                        {tasks.sort((a,b)=> (a.order||0) - (b.order||0)).map((task, idx) => (
-                            <div key={task.id} onDragOver={e => handleItemDragOver(e, idx)} onDragLeave={handleItemDragLeave}>
-                                {overIndex === idx && <div className="insert-indicator" />}
-                                <TaskCard task={task} updateTask={updateTask} deleteTask={deleteTask} />
-                            </div>
-                        ))}
-                        {overIndex === tasks.length && <div className="insert-indicator" />}
+            <div className="task-list">
+                {tasks.sort((a, b) => (a.order || 0) - (b.order || 0)).map((task, idx) => (
+                    <div key={task.id} onDragOver={e => handleItemDragOver(e, idx)} onDragLeave={handleItemDragLeave}>
+                        {overIndex === idx && <div className="insert-indicator" />}
+                        <TouchDraggable task={task} index={idx} columnId={columnId} onTouchDrop={(taskId, toCol, toIdx) => moveTask(taskId, toCol, toIdx)}>
+                            <TaskCard task={task} updateTask={updateTask} deleteTask={deleteTask} />
+                        </TouchDraggable>
                     </div>
+                ))}
+                {overIndex === tasks.length && <div className="insert-indicator" />}
+            </div>
         </section>
     )
 }
