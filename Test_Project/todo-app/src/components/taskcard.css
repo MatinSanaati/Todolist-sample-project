@@ -22,8 +22,31 @@
     margin-right: 6px;
     padding: 6px 8px;
     border-radius: 6px;
+    color: #fff;
     border: 0;
-    background: #eef2ff;
+    outline: none;
+}
+
+.task-actions button:nth-child(1) {
+    background: #e54646;
+    cursor: pointer;
+    transition: all ease 150ms;
+}
+
+.task-actions button:nth-child(1):hover {
+    background: #d32f2f;
+    transform: scale(1.05);
+}
+
+.task-actions button:nth-child(2) {
+    background: #46c5e5;
+    cursor: pointer;
+    transition: all ease 150ms;
+}
+
+.task-actions button:nth-child(2):hover {
+    background: #46a5e5;
+    transform: scale(1.05);
 }
 
 .task-body {

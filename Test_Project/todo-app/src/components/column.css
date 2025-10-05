@@ -24,13 +24,13 @@
 
 .column-header h2 {
     font-size: 1.05rem;
-    margin: 0
+    margin: 0;
 }
 
 .count {
     font-weight: 600;
     color: #555;
-    font-size: 0.9rem
+    font-size: 0.9rem;
 }
 
 .add-form {
@@ -40,6 +40,7 @@
 }
 
 .add-form input {
+    font-size: 1.2rem;
     padding: 8px;
     border-radius: 6px;
     border: 1px solid #ddd;
@@ -53,11 +54,100 @@
     background: #4f46e5;
     color: #fff;
     align-self: flex-start;
+    cursor: pointer;
+    transition: all 150ms ease;
+}
+
+.add-form button:hover {
+    background: #4338ca;
+    transform: scale(1.05);
 }
 
 .task-list {
     display: flex;
     flex-direction: column;
     gap: 8px;
-    margin-top: 6px
+    margin-top: 6px;
+}
+
+.add-form.shake {
+    animation: shake 0.45s cubic-bezier(.36, .07, .19, .97) both;
+}
+
+.add-form .error {
+    color: #b91c1c;
+    margin-top: 6px;
+    font-size: 0.9rem;
+}
+
+/* input direction helpers */
+.add-form input.rtl {
+    direction: rtl;
+    text-align: right
+}
+
+.add-form input.ltr {
+    direction: ltr;
+    text-align: left;
+}
+
+/* ensure alert doesn't overflow */
+.add-form .alert {
+    width: 100%;
+}
+
+/* small shake animation for invalid submit */
+@keyframes shake {
+
+    10%,
+    90% {
+        transform: translate3d(-1px, 0, 0);
+    }
+
+    20%,
+    80% {
+        transform: translate3d(2px, 0, 0);
+    }
+
+    30%,
+    50%,
+    70% {
+        transform: translate3d(-4px, 0, 0);
+    }
+
+    40%,
+    60% {
+        transform: translate3d(4px, 0, 0);
+    }
+}
+
+/* device-like shake on the root for visual effect */
+#app-root.device-shake {
+    animation: deviceShake 0.6s ease-in-out;
+}
+
+@keyframes deviceShake {
+    0% {
+        transform: translateY(0)
+    }
+
+    20% {
+        transform: translateY(-4px)
+    }
+
+    40% {
+        transform: translateY(2px)
+    }
+
+    60% {
+        transform: translateY(-2px)
+    }
+
+    80% {
+        transform: translateY(1px)
+    }
+
+    100% {
+        transform: translateY(0)
+    }
 }
