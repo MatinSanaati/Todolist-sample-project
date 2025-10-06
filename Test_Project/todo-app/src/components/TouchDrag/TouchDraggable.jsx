@@ -1,12 +1,6 @@
 import React, { useRef, useEffect } from 'react'
 import './touch-drag.css'
 
-// TouchDraggable: wraps a child (task card) and enables touch-based drag-and-drop.
-// Props:
-// - task: task object with id
-// - index: position index in source column
-// - columnId: source column id
-// - onTouchDrop: (taskId, toColumnId, toIndex) => void
 export default function TouchDraggable({ task, index, columnId, onTouchDrop, children }) {
   const nodeRef = useRef(null)
   const ghostRef = useRef(null)
@@ -17,12 +11,24 @@ export default function TouchDraggable({ task, index, columnId, onTouchDrop, chi
     if (!el) return
 
     let startX = 0, startY = 0, moving = false, touchId = null
+    let longPress = false, pressTimer = null, cancelledByScroll = false
 
     const onTouchStart = e => {
       const t = e.changedTouches[0]
       touchId = t.identifier
       startX = t.clientX; startY = t.clientY
       moving = false
+      cancelledByScroll = false
+      longPress = false
+
+      // set up long-press gate (600ms)
+      if (pressTimer) clearTimeout(pressTimer)
+      pressTimer = setTimeout(() => {
+        longPress = true
+        // subtle feedback
+        try { navigator.vibrate && navigator.vibrate(8) } catch (e) {}
+        el.classList.add('td-pressing')
+      }, 600)
     }
 
     const createGhost = (touch) => {
@@ -84,10 +90,19 @@ export default function TouchDraggable({ task, index, columnId, onTouchDrop, chi
       const dx = Math.abs(t.clientX - startX)
       const dy = Math.abs(t.clientY - startY)
       const moved = dx + dy > 8
-      if (moved && !moving) {
+
+      // If user scrolls before long press -> cancel drag attempt
+      if (!longPress && moved) {
+        cancelledByScroll = true
+        if (pressTimer) { clearTimeout(pressTimer); pressTimer = null }
+        return // allow native scroll; do not preventDefault
+      }
+
+      // Only allow entering drag after long-press gate
+      if (longPress && moved && !moving) {
         moving = true
         createGhost(t)
-        // small haptic feedback if available
+        el.classList.add('td-dragging')
         try { navigator.vibrate && navigator.vibrate(10) } catch (e) {}
       }
       if (moving) {
@@ -105,6 +120,7 @@ export default function TouchDraggable({ task, index, columnId, onTouchDrop, chi
       let t = null
       for (let i = 0; i < touches.length; i++) if (touches[i].identifier === touchId) { t = touches[i]; break }
       if (!t) return
+      if (pressTimer) { clearTimeout(pressTimer); pressTimer = null }
       if (moving) {
         const target = lastTargetRef.current || findDropTarget(t)
         if (target && target.col) {
@@ -115,6 +131,9 @@ export default function TouchDraggable({ task, index, columnId, onTouchDrop, chi
       removeGhost()
       moving = false
       touchId = null
+      longPress = false
+      cancelledByScroll = false
+      try { el.classList.remove('td-dragging'); el.classList.remove('td-pressing') } catch (e) {}
     }
 
     el.addEventListener('touchstart', onTouchStart, { passive: true })
@@ -128,6 +147,7 @@ export default function TouchDraggable({ task, index, columnId, onTouchDrop, chi
       el.removeEventListener('touchend', onTouchEnd)
       el.removeEventListener('touchcancel', onTouchEnd)
       removeGhost()
+      if (pressTimer) clearTimeout(pressTimer)
     }
   }, [task, index, columnId, onTouchDrop])
 

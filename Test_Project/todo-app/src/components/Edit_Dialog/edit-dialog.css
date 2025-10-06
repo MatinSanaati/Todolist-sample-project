@@ -4,39 +4,43 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 12000
+    z-index: 12000;
 }
 
 .ed-backdrop {
     position: absolute;
     inset: 0;
-    background: rgba(0, 0, 0, 0.6);
+    background: rgba(0, 0, 0, 0.5);
     animation: ed-backdrop-in 200ms ease forwards
 }
 
 .ed-card {
     position: relative;
     z-index: 12001;
-    background: #fff;
+    background: linear-gradient(180deg, var(--surface-strong), transparent 160%);
     padding: 18px;
-    border-radius: 10px;
+    border-radius: var(--radius-md);
     width: clamp(320px, 90%, 640px);
-    box-shadow: 0 24px 64px rgba(2, 6, 23, 0.32);
+    box-shadow: var(--shadow-lg);
+    border: 1px solid var(--border);
     transform: translateY(-8px);
     animation: ed-card-in 260ms cubic-bezier(.2, .9, .3, 1) forwards
 }
 
 .ed-title {
     margin: 0 0 8px 0;
-    text-align: right
+    text-align: right;
+    color: var(--text);
 }
 
 .ed-body input,
 .ed-body textarea {
     width: 100%;
     padding: 10px;
-    border-radius: 8px;
-    border: 1px solid #e6eef6;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    background: color-mix(in oklab, var(--surface) 72%, var(--bg-alt) 28%);
+    color: var(--text);
     margin-bottom: 8px
 }
 
@@ -49,29 +53,30 @@
 .ed-actions button {
     border: none;
     outline: none;
-    padding: 8px 12px;
-    border-radius: 8px;
+    padding: 10px 14px;
+    border-radius: var(--radius-sm);
     color: #fff;
     cursor: pointer;
-    transition: all ease 150ms;
+    transition: transform 150ms ease, filter 150ms ease, box-shadow 150ms ease;
 }
 
 .ed-actions button:nth-child(1) {
-    background: #46c5e5;
+    background: linear-gradient(180deg, #06b6d4, #0891b2);
+    box-shadow: 0 8px 20px color-mix(in oklab, #06b6d4 24%, transparent 76%);
 }
 
 .ed-actions button:nth-child(1):hover {
-    background: #46a5e5;
-    transform: scale(1.05);
+    filter: brightness(1.06);
+    transform: translateY(-1px);
 }
 
 .ed-actions button:nth-child(2) {
-    background: #ef4444;
+    background: linear-gradient(180deg, var(--danger), #e11d48);
 }
 
 .ed-actions button:nth-child(2):hover {
-    background: #ef2c2c;
-    transform: scale(1.05);
+    filter: brightness(1.06);
+    transform: translateY(-1px);
 }
 
 @keyframes ed-backdrop-in {

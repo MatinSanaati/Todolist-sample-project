@@ -1,16 +1,21 @@
 .column {
     min-width: 280px;
-    border-radius: 8px;
+    border-radius: var(--radius-md);
     padding: 16px;
     flex: 1 1 380px;
     display: flex;
     flex-direction: column;
     gap: 12px;
-    transition: box-shadow 160ms, transform 120ms;
+    transition: box-shadow 160ms, transform 120ms, background-color 160ms;
+    backdrop-filter: blur(var(--blur));
+    -webkit-backdrop-filter: blur(var(--blur));
+    background: linear-gradient(180deg, var(--surface), transparent 120%);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-sm);
 }
 
 .column.drag-over {
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+    box-shadow: var(--shadow-md);
     transform: translateY(-4px);
 }
 
@@ -24,11 +29,12 @@
 .column-header h2 {
     font-size: 1.1rem;
     margin: 0;
+    color: var(--text);
 }
 
 .count {
     font-weight: 600;
-    color: #555;
+    color: var(--muted);
     font-size: 0.9rem;
 }
 
@@ -39,27 +45,31 @@
 }
 
 .add-form input {
-    font-size: 1.2rem;
-    padding: 8px;
-    border-radius: 6px;
-    border: 1px solid #ddd;
+    font-size: 1.05rem;
+    padding: 10px 12px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    background: color-mix(in oklab, var(--surface) 72%, var(--bg-alt) 28%);
+    color: var(--text);
     width: 100%;
+    transition: border-color 120ms ease, background-color 120ms ease, box-shadow 120ms ease;
 }
 
 .add-form button {
-    padding: 8px 12px;
-    border-radius: 6px;
+    padding: 10px 14px;
+    border-radius: var(--radius-sm);
     border: 0;
-    background: #4f46e5;
+    background: linear-gradient(180deg, var(--accent), var(--accent-strong));
     color: #fff;
     align-self: flex-start;
     cursor: pointer;
-    transition: all 150ms ease;
+    transition: transform 120ms ease, filter 120ms ease, box-shadow 120ms ease;
+    box-shadow: 0 8px 20px color-mix(in oklab, var(--accent) 24%, transparent 76%);
 }
 
 .add-form button:hover {
-    background: #4338ca;
-    transform: scale(1.05);
+    filter: brightness(1.06);
+    transform: translateY(-1px);
 }
 
 .task-list {
@@ -70,6 +80,7 @@
     flex-direction: column;
     gap: 8px;
     margin-top: 6px;
+    padding: 2px;
 }
 
 .task-list::-webkit-scrollbar {
@@ -85,19 +96,21 @@
 }
 
 .task-list::-webkit-scrollbar-thumb {
-    background: #ccc;
+    background: color-mix(in oklab, var(--text-muted) 30%, transparent 70%);
     border-radius: 4px;
 }
 
 .task-list::-webkit-scrollbar-thumb:hover {
-    background: #aaa;
+    background: color-mix(in oklab, var(--text-muted) 45%, transparent 55%);
 }
 
 .insert-indicator {
     height: 110px;
     margin: 8px 0;
     border-radius: 10px;
-    box-shadow: 0 6px 18px rgba(107, 109, 202, 0.336);
+    border: 1px dashed color-mix(in oklab, var(--accent) 50%, transparent 50%);
+    background: color-mix(in oklab, var(--accent) 8%, transparent 92%);
+    box-shadow: 0 6px 18px color-mix(in oklab, var(--accent) 18%, transparent 82%);
     transition: height 120ms ease, opacity 160ms ease;
 }
 
@@ -106,7 +119,7 @@
 }
 
 .add-form .error {
-    color: #b91c1c;
+    color: var(--danger);
     margin-top: 6px;
     font-size: 0.9rem;
 }
@@ -204,7 +217,7 @@
     }
 
     .add-form button {
-        padding: 6px 10px
+        padding: 8px 12px
     }
 }
 

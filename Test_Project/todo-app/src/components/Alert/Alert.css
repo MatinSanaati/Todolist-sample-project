@@ -3,13 +3,13 @@
     align-items: center;
     gap: 8px;
     justify-content: space-between;
-    background: #fff1f2;
-    border: 1px solid #fca5a5;
-    color: #7f1d1d;
-    padding: 8px 10px;
-    border-radius: 8px;
+    background: linear-gradient(180deg, rgba(239, 68, 68, 0.14), rgba(239, 68, 68, 0.06));
+    border: 1px solid color-mix(in oklab, var(--danger) 36%, transparent 64%);
+    color: color-mix(in oklab, var(--danger) 86%, white 14%);
+    padding: 10px 14px;
+    border-radius: var(--radius-sm);
     margin-top: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+    box-shadow: var(--shadow-sm);
     animation: alertIn 240ms ease-out;
 }
 
@@ -47,7 +47,7 @@
     position: fixed;
     inset: 0 0 auto 0;
     height: 80px;
-    background: linear-gradient(rgba(0, 0, 0, 0.06), rgba(0, 0, 0, 0));
+    background: linear-gradient(rgba(0, 0, 0, 0.16), rgba(0, 0, 0, 0));
     pointer-events: none;
 }
 
@@ -57,14 +57,14 @@
     align-items: center;
     gap: 8px;
     justify-content: space-between;
-    background: #fff1f2;
-    border: 1px solid #fca5a5;
-    color: #7f1d1d;
+    background: linear-gradient(180deg, rgba(239, 68, 68, 0.14), rgba(239, 68, 68, 0.06));
+    border: 1px solid color-mix(in oklab, var(--danger) 36%, transparent 64%);
+    color: color-mix(in oklab, var(--danger) 86%, white 14%);
     padding: 10px 14px;
-    border-radius: 8px;
-    box-shadow: 0 8px 28px rgba(16, 24, 40, 0.08);
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow-sm);
     animation: slideDown 300ms cubic-bezier(.2, .9, .3, 1);
-    max-width: 220px;
+    max-width: 260px;
     width: calc(100% - 40px);
 }
 
@@ -109,7 +109,7 @@
 
 /* success variant */
 .alert-success {
-    background: linear-gradient(180deg, #ecfdf5, #d1fae5);
-    border: 1px solid #86efac;
-    color: #065f46;
+    background: linear-gradient(180deg, rgba(34, 197, 94, 0.16), rgba(34, 197, 94, 0.08));
+    border: 1px solid color-mix(in oklab, var(--success) 36%, transparent 64%);
+    color: color-mix(in oklab, var(--success) 80%, white 20%);
 }

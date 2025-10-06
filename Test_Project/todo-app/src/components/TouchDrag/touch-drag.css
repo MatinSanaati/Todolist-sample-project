@@ -4,17 +4,33 @@
 	/* allow vertical scroll, but we'll manage horizontal drags */
 }
 
+/* Long-press feedback before drag */
+.td-touch-wrapper.td-pressing {
+	transition: transform 160ms ease, box-shadow 160ms ease, filter 160ms ease;
+	transform: scale(0.995);
+	filter: saturate(1.02);
+}
+
 /* ghost preview */
 .td-ghost {
 	opacity: 0;
 	transform: scale(0.98);
-	transition: opacity 180ms ease, transform 180ms ease;
+	transition: opacity 180ms ease, transform 180ms ease, filter 180ms ease;
 	will-change: transform, opacity, left, top;
 	z-index: 9998;
-	box-shadow: 0 18px 40px rgba(2, 6, 23, 0.35);
+	box-shadow: var(--shadow-md);
+	filter: drop-shadow(0 16px 40px rgba(0,0,0,0.35));
+	border-radius: var(--radius-md);
 }
 
 .td-ghost--visible {
 	opacity: 1;
 	transform: scale(1);
+}
+
+/* Active dragging state on the original wrapper */
+.td-touch-wrapper.td-dragging {
+	transition: transform 120ms ease, filter 120ms ease;
+	transform: scale(0.98);
+	filter: brightness(1.02) saturate(1.02);
 }
